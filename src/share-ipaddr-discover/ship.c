@@ -28,13 +28,13 @@ static int opt_nofork;
 #define RUN_NONE 0
 #define RUN_IDLE 1
 
-void ship_version(char *prog_name)
+void ship_usage(char *prog_name)
 {
   fprintf(stdout,
       "Usage: shipd [OPTIONS]\n"
       "IP Discovery daemon for the Share Library Suite.\n");
 }
-void ship_usage(char *prog_name)
+void ship_version(char *prog_name)
 {
   fprintf(stdout,
       "shipd version %s\n"
@@ -74,6 +74,9 @@ int main(int argc, char *argv[])
 
   if (!opt_nofork)
     daemon(TRUE, TRUE);
+
+  signal(SIGHUP, SIG_IGN);
+  signal(SIGPIPE, SIG_IGN);
 
   signal(SIGINT, sig_term);
   signal(SIGQUIT, sig_term);

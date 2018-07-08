@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ([2.63])
-AC_INIT([shipd], [3.01])
+AC_INIT([shipd], [3.02])
 AC_CONFIG_AUX_DIR([build-aux])
 AM_INIT_AUTOMAKE
 AC_CONFIG_SRCDIR([src/share-ipaddr-discover])
@@ -21,7 +21,7 @@ LT_INIT
 
 version_patch=01
 AC_SUBST(version_patch)
-version_info=3:01:0
+version_info=3:02:0
 AC_SUBST(version_info)
 
 # docs
@@ -261,6 +261,8 @@ AC_CHECK_LIB([share], [get_libshare_version], ,
   AC_MSG_ERROR("libshare (runtime library) is required")
 )
 
+AC_CHECK_LIB([m], [floor])
+
 # initd scripts #
 AC_CONFIG_FILES([scripts/initd/shipd], [chmod +x scripts/initd/shipd])
 
@@ -285,6 +287,9 @@ if test "x$debug" = "xtrue" ; then
 fi
 
 AC_CHECK_PROGS([CP], [cp])
+
+AC_CHECK_PROGS([SYSTEMCTL], [systemctl])
+AM_CONDITIONAL([HAVE_SYSTEMCTL], [test -n "$SYSTEMCTL"])
 
 
 AC_OUTPUT(Makefile src/share-ipaddr-discover/Makefile bin/Makefile) 
